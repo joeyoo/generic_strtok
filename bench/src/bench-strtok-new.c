@@ -1,14 +1,13 @@
+/* Code for the optimized generic version of GLIBC's strtok_r */
+
 #define _GNU_SOURCE
 #include "bench-strtok.h"
+#include <string.h>
 
 #define NUL ((char)0)
 #ifndef __u_char_defined
 typedef unsigned char u_char;
 typedef unsigned long int u_long;
-#endif
-
-#ifndef __strchrnul
-#define __strchrnul strchrnul
 #endif
 
 #define EXPAND_HEX(type, mask)                                                \

@@ -1,6 +1,9 @@
+/* Main Benchmark file */
+
 #include "bench-strtok.h"
 #include <benchmark/benchmark.h>
 #include <fstream>
+#include <string.h>
 
 #define OLD_FUNC old_generic_strtok_r
 #define NEW_FUNC new_generic_strtok_r
@@ -54,9 +57,9 @@ BM_TEMPLATE (OLD_FUNC);
 BM_TEMPLATE (NEW_FUNC);
 
 static error_t
-read_in_file (void)
+read_in_file (std::string path)
 {
-  std::ifstream is (INPUT_PATH);
+  std::ifstream is (path);
 
   if (!is)
     return errno;
@@ -67,11 +70,15 @@ read_in_file (void)
 
   return is.fail () ? errno : 0;
 }
+#include <iostream>
 
 int
 main (int argc, char **argv)
 {
-  assert_perror (read_in_file ());
+  std::string path = PWD;
+  path += "/bench-input.txt";
+
+  assert_perror (read_in_file (path));
 
   ::benchmark::Initialize (&argc, argv);
 

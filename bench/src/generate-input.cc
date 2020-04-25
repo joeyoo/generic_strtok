@@ -1,18 +1,18 @@
+/* Generates random input file at ./bench-input.txt */
+
 #include "bench-strtok.h"
 #include <assert.h>
 #include <fstream>
 #include <immintrin.h>
 #include <iostream>
 #include <stdalign.h>
-
-#define FILL_BUF fill_buf_random
+#include <string.h>
 
 // Abbreviation for long, long type name
 typedef unsigned long long int ull_t;
 
 // Checks whether V contains a zero-byte
-#define HAS0(v)                                                               \
-  ~v &(v - UINT64_C (0x0101010101010101)) & UINT64_C (0x8080808080808080)
+#define HAS0(v) ~v &(v - 0x0101010101010101ULL) & 0x8080808080808080ULL
 
 // Calls _rdrand64_step until an 8-byte sequence w/o zero bytes is generated
 #define rnd64(rnd)                                                            \
@@ -23,7 +23,7 @@ typedef unsigned long long int ull_t;
 // Char buffer to hold the randomly generated sequence of STATICBUFSIZE bytes
 static char BUF[STATICBUFSIZE + EPILOGUE_SIZE] alignas (MAX_ALIGN);
 
-// Fills BUF with random, non-zero bytes using XMM registers + SSE2 instr.
+// Fills BUF with random, non-zero bytes using XMM registers
 static void
 fill_buf_random (void)
 {
@@ -46,19 +46,25 @@ write_to_file (std::ofstream os)
 
   os.rdbuf ()->sputn (BUF, STATICBUFSIZE);
   os.close ();
+
   return os.fail ();
 }
 
 static int
-generate_input_file (void)
+generate_input_file (std::string path)
 {
-  FILL_BUF ();
-  return write_to_file (std::ofstream (INPUT_PATH));
+  fill_buf_random ();
+
+  return write_to_file (std::ofstream (path));
 }
 
 int
 main (void)
 {
-  assert_perror (generate_input_file ());
+  std::string path = PWD;
+  path += "/bench-input.txt";
+
+  assert_perror (generate_input_file (path));
+
   return 0;
 }

@@ -1,0 +1,17 @@
+# ./
+.vscode
+
+# ./*/
+*/.vscode
+*/.clang-format
+*/build/*
+
+# ./benchmark
+bench/ce_headers
+bench/bench
+bench/generate-input
+bench/src/benchmark
+
+# ./test
+test/test
+

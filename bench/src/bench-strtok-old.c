@@ -1,8 +1,33 @@
 #define _GNU_SOURCE
 #include "bench-strtok.h"
+#include <string.h>
+
+#define WITH_INLINE
+
+#ifdef WITH_INLINE
+#define INLINE __always_inline
+#else
+#define INLINE __attribute_noinline_
+#endif
+
+/*
+ * Things to note:
+ *     1. We want to specify "__attribute_noinline__" because the compiler will
+ *        likely inline and further optimize the calls to generic_str(c)spn,
+ *        which isn't indicative of what happens in a default build of glibc
+ *        (-O2/s -g)
+ *     2. Let's say we compiled glibc with LTO (Link-Time Optimization).
+ *        Although the redundant allocation for the 256-byte table is optimized
+ *        away, all the logic that deals with initializing, getting, and
+ *        setting; remains.
+ */
+
+INLINE size_t generic_strspn (const char *str, const char *accept);
+INLINE size_t generic_strcspn (const char *str, const char *reject);
+
 /* Return the length of the maximum initial segment
    of S which contains only characters in ACCEPT.  */
-__attribute_noinline__ __attribute__ ((unused)) size_t
+size_t
 generic_strspn (const char *str, const char *accept)
 {
   if (accept[0] == '\0')
@@ -40,7 +65,7 @@ generic_strspn (const char *str, const char *accept)
   if (!p[s[3]])
     return 3;
 
-  s = PTR_ALIGN_DOWN(s, 4);
+  s = PTR_ALIGN_DOWN (s, 4);
 
   unsigned int c0, c1, c2, c3;
   do
@@ -59,12 +84,12 @@ generic_strspn (const char *str, const char *accept)
 
 /* Return the length of the maximum initial segment of S
    which contains no characters from REJECT.  */
-__attribute_noinline__ __attribute__ ((unused)) size_t
+size_t
 generic_strcspn (const char *str, const char *reject)
 {
   if (__glibc_unlikely (reject[0] == '\0')
       || __glibc_unlikely (reject[1] == '\0'))
-    return (size_t) strchrnul (str, reject[0]) - (size_t)str;
+    return (size_t)__strchrnul (str, reject[0]) - (size_t)str;
 
   /* Use multiple small memsets to enable inlining on most targets.  */
   unsigned char table[256];
