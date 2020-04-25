@@ -3,7 +3,7 @@ GLIBC=/home/user/glibc/build;
 BASELINE=bench-strtok-new;
 CONTENDER=bench-strtok-old;
 
-BENCHMARK_REPETITIONS=10;
+BENCHMARK_REPETITIONS=12;
 BENCHMARK_OUT_FORMAT=json;
 BENCHMARK_OUT="results/$(date '+%y%m%d_%H%M%S').${BENCHMARK_OUT_FORMAT}";
 BENCHMARK_REPORT_AGGREGATES_ONLY=true;

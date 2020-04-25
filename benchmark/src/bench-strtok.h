@@ -6,10 +6,8 @@ extern "C" {
 #include <string.h>
 
 #define MAX_ALIGN __BIGGEST_ALIGNMENT__
-// #define SIZE_S 4096
-// #define SIZE_D 256
-#define SIZE_S 2048
-#define SIZE_D 4
+#define SIZE_S 4096
+#define SIZE_D 256
 #define BUFSIZE_S SIZE_S + MAX_ALIGN
 #define BUFSIZE_D SIZE_D + MAX_ALIGN
 #define STATICBUFSIZE BUFSIZE_S + BUFSIZE_D

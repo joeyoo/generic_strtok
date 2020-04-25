@@ -6,7 +6,7 @@ cpu = 0.0
 num_iter = 0
 
 for line in sys.stdin:
-    matches = re.findall("^.+_mean\s+((?:-|\+)\d+\.\d+)\s+((?:-|\+)\d+\.\d+)", line)
+    matches = re.findall("^.+_median\s+((?:-|\+)\d+\.\d+)\s+((?:-|\+)\d+\.\d+)", line)
     if matches:
         group = matches[0]
         time += float(group[0])
