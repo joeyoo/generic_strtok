@@ -4,14 +4,14 @@
 # ./*/
 */.vscode
 */.clang-format
-*/build/*
+build/*
 
 # ./benchmark
-bench/ce_headers
-bench/bench
-bench/generate-input
-bench/src/benchmark
+benchmark
+
+# ./results
+results/*
 
 # ./test
-test/test
+test
 

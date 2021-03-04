@@ -62,7 +62,7 @@ int
 main (void)
 {
   std::string path = PWD;
-  path += "/bench-input.txt";
+  path += "/build/bench-input.txt";
 
   assert_perror (generate_input_file (path));
 

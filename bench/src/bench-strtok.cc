@@ -76,7 +76,7 @@ int
 main (int argc, char **argv)
 {
   std::string path = PWD;
-  path += "/bench-input.txt";
+  path += "/build/bench-input.txt";
 
   assert_perror (read_in_file (path));
 
